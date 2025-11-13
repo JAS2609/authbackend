@@ -188,7 +188,7 @@ const getCurrentUser=asyncHandler(async(req,res)=>{
     return res.status(200).json(new ApiResponse(200,req.user,"Current User Details"));
 
 })
-export const getMe = async (req, res) => {
+ const getMe = async (req, res) => {
   try {
     const userId = req.user.id; 
     const user = await User.findById(userId).select("id fullname username email role createdAt");
