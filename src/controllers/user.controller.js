@@ -188,15 +188,23 @@ const getCurrentUser=asyncHandler(async(req,res)=>{
     return res.status(200).json(new ApiResponse(200,req.user,"Current User Details"));
 
 })
- const getMe = async (req, res) => {
+export const getMe = async (req, res) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: req.user.id },
-      select: { id: true, email: true, role: true, createdAt: true },
+    const userId = req.user.id; 
+    const user = await User.findById(userId).select("id fullname username email role createdAt");
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Current User Details",
+      data: user,
     });
-    res.json(user);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server Error" });
   }
 };
 
