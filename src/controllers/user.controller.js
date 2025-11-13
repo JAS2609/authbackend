@@ -188,9 +188,19 @@ const getCurrentUser=asyncHandler(async(req,res)=>{
     return res.status(200).json(new ApiResponse(200,req.user,"Current User Details"));
 
 })
-
+export const getMe = async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      select: { id: true, email: true, role: true, createdAt: true },
+    });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 
 
 export{registerUser,loginUser,refreshAccessToken,loggedOutUser,changeCurrentPassword,
-getCurrentUser}
+getCurrentUser ,getMe}
