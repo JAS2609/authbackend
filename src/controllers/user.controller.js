@@ -88,10 +88,14 @@ const loginUser=asyncHandler(async(req,res)=>{
       if(!loggedInUser){
         throw new ApiError(500,"error in user login")
       }
-      const options={
-        httpOnly:true,
-        secure: process.env.NODE_ENV==="production",
-      }
+      const isProd = process.env.NODE_ENV === "production";
+
+    const options = {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
+      path: "/",
+    };
 
       return res.status(200)
       .cookie("accessToken",accessToken,options)
