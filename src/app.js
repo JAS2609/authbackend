@@ -7,6 +7,7 @@ app.use(
     cors({
         origin: [
       "http://localhost:3000",
+      "https://authproj123.netlify.app",
     ],
         credentials:true,
         methods: ["GET", "POST", "PUT", "DELETE"],
