@@ -33,7 +33,7 @@ const registerUser=asyncHandler(async(req,res)=>{
         $or:[{email},{username}]
        })
     if(existedUser){
-    throw new ApiError(400,"User with email or username already exists")
+    return res.status(400).json({ message: "User already exists. Please login." });
     }
   let role = "user";
   if (adminCode && adminCode === process.env.ADMIN_SECRET_CODE) {
